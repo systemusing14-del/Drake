@@ -3,99 +3,112 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AnimeStickerShop - Premium Anime Stickers</title>
-    <link rel="stylesheet" href="style.css">
+    <title>AnimeStickerAI - Generate Custom Anime Stickers</title>
+    <link rel="stylesheet" href="styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
-    <!-- Header -->
-    <header class="header">
-        <nav class="navbar">
-            <div class="nav-container">
-                <div class="logo">
-                    <i class="fas fa-dragon"></i>
-                    <span>AnimeStickerShop</span>
-                </div>
-                <ul class="nav-menu">
-                    <li><a href="#home">Home</a></li>
-                    <li><a href="#products">Stickers</a></li>
-                    <li><a href="#about">About</a></li>
-                    <li><a href="#contact">Contact</a></li>
-                </ul>
-                <div class="cart-icon">
-                    <i class="fas fa-shopping-cart"></i>
-                    <span class="cart-count">0</span>
-                </div>
-                <div class="hamburger">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                </div>
+    <header>
+        <div class="container">
+            <div class="logo">
+                <i class="fas fa-magic"></i>
+                <h1>AnimeStickerAI</h1>
             </div>
-        </nav>
+            <nav>
+                <ul>
+                    <li><a href="#home" class="nav-link">Home</a></li>
+                    <li><a href="#gallery" class="nav-link">Gallery</a></li>
+                    <li><a href="#generate" class="nav-link">Generate</a></li>
+                </ul>
+                <div class="mobile-menu-toggle">
+                    <i class="fas fa-bars"></i>
+                </div>
+            </nav>
+        </div>
     </header>
 
-    <!-- Hero Section -->
-    <section id="home" class="hero">
-        <div class="hero-content">
-            <h1>Premium Anime Stickers</h1>
-            <p>Collect your favorite anime characters with high-quality vinyl stickers!</p>
-            <button class="cta-btn">Shop Now</button>
-        </div>
-        <div class="hero-stickers">
-            <img src="https://images.unsplash.com/photo-1578864202497-9900799ad390?w=400&h=400&fit=crop" alt="Anime stickers">
-        </div>
-    </section>
+    <main>
+        <!-- Hero Section -->
+        <section id="home" class="hero">
+            <div class="container">
+                <div class="hero-content">
+                    <h2>Create Your Perfect Anime Sticker</h2>
+                    <p>Transform your ideas into stunning anime-style stickers with our AI generator. Instant creation, endless possibilities!</p>
+                    <button class="cta-button" onclick="scrollToGenerate()">
+                        <i class="fas fa-sparkles"></i> Generate Now
+                    </button>
+                </div>
+                <div class="hero-animation">
+                    <div class="floating-sticker">✨</div>
+                    <div class="floating-sticker delay-1">⭐</div>
+                    <div class="floating-sticker delay-2">🌸</div>
+                </div>
+            </div>
+        </section>
 
-    <!-- Products Section -->
-    <section id="products" class="products">
+        <!-- Gallery Section -->
+        <section id="gallery" class="gallery-section">
+            <div class="container">
+                <h2 class="section-title">Sticker Gallery</h2>
+                <p class="section-subtitle">Browse our collection of AI-generated anime stickers</p>
+                <div class="gallery-grid" id="galleryGrid">
+                    <!-- Gallery items will be populated by JavaScript -->
+                </div>
+                <button class="load-more-btn" onclick="loadMoreStickers()">
+                    Load More <i class="fas fa-chevron-down"></i>
+                </button>
+            </div>
+        </section>
+
+        <!-- Generate Section -->
+        <section id="generate" class="generate-section">
+            <div class="container">
+                <h2 class="section-title">AI Sticker Generator</h2>
+                <div class="generator-container">
+                    <div class="input-section">
+                        <div class="prompt-input">
+                            <label for="stickerPrompt">Describe your sticker:</label>
+                            <div class="input-wrapper">
+                                <i class="fas fa-comment-dots"></i>
+                                <input type="text" id="stickerPrompt" placeholder="e.g., 'cute cat girl with pink hair and star eyes'">
+                                <button class="generate-btn" onclick="generateSticker()">
+                                    <i class="fas fa-magic"></i> Generate
+                                </button>
+                            </div>
+                        </div>
+                        <div class="prompt-examples">
+                            <h4>Try these examples:</h4>
+                            <button class="example-btn" onclick="setPrompt('neko girl with headphones')">Neko Girl</button>
+                            <button class="example-btn" onclick="setPrompt('samurai with cherry blossoms')">Samurai</button>
+                            <button class="example-btn" onclick="setPrompt('magical girl with wand')">Magical Girl</button>
+                        </div>
+                    </div>
+                    <div class="output-section">
+                        <div class="loading" id="loadingSpinner" style="display: none;">
+                            <i class="fas fa-spinner fa-spin"></i>
+                            <p>Generating your sticker...</p>
+                        </div>
+                        <div class="result" id="stickerResult" style="display: none;">
+                            <img id="generatedSticker" alt="Generated Sticker">
+                            <div class="result-actions">
+                                <button class="download-btn" onclick="downloadSticker()">
+                                    <i class="fas fa-download"></i> Download
+                                </button>
+                                <button class="share-btn" onclick="shareSticker()">
+                                    <i class="fas fa-share-alt"></i> Share
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
         <div class="container">
-            <h2>Featured Stickers</h2>
-            <div class="products-grid" id="productsGrid">
-                <!-- Stickers will be populated by JavaScript -->
-            </div>
-        </div>
-    </section>
-
-    <!-- Cart Modal -->
-    <div id="cartModal" class="modal">
-        <div class="modal-content">
-            <span class="close">&times;</span>
-            <h2>Shopping Cart</h2>
-            <div id="cartItems"></div>
-            <div class="cart-total">
-                <h3>Total: $<span id="cartTotal">0.00</span></h3>
-                <button class="checkout-btn">Checkout</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Footer -->
-    <footer id="contact">
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-section">
-                    <h3>AnimeStickerShop</h3>
-                    <p>Your one-stop shop for premium anime stickers!</p>
-                </div>
-                <div class="footer-section">
-                    <h4>Quick Links</h4>
-                    <ul>
-                        <li><a href="#home">Home</a></li>
-                        <li><a href="#products">Shop</a></li>
-                        <li><a href="#about">About</a></li>
-                    </ul>
-                </div>
-                <div class="footer-section">
-                    <h4>Contact</h4>
-                    <p>Email: shop@animestickershop.com</p>
-                    <p>Phone: (555) 123-4567</p>
-                </div>
-            </div>
-            <div class="footer-bottom">
-                <p>&copy; 2024 AnimeStickerShop. All rights reserved.</p>
-            </div>
+            <p>&copy; 2024 AnimeStickerAI. Made with <i class="fas fa-heart"></i> for anime fans. All stickers are AI-generated originals.</p>
         </div>
     </footer>
 
