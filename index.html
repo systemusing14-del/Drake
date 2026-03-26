@@ -3,60 +3,35 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AnimeSphere</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Anime Gallery</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
-    <!-- Navbar -->
     <header>
-        <h1>AnimeSphere</h1>
-        <nav>
-            <a href="#">Home</a>
-            <a href="#">Genres</a>
-            <a href="#">Top Anime</a>
-            <a href="#">Community</a>
-        </nav>
+        <h1>🎌 Anime Image Gallery</h1>
     </header>
 
-    <!-- Hero Section -->
-    <section class="hero">
-        <h2>Explore Anime Worlds</h2>
-        <p>Dive into articles about anime, fandoms, theories & more.</p>
+    <!-- Upload Section -->
+    <section class="upload-section">
+        <h2>Upload Anime Image</h2>
+        
+        <form id="uploadForm">
+            <input type="file" id="imageInput" accept="image/*" required>
+            
+            <!-- Tag input to help validate anime -->
+            <input type="text" id="tagInput" placeholder="Enter tag (e.g. anime, naruto)" required>
+            
+            <button type="submit">Upload</button>
+        </form>
+
+        <p class="note">Only anime-related images allowed. Max size: 2MB</p>
     </section>
 
-    <!-- Search -->
-    <div class="search-box">
-        <input type="text" id="search" placeholder="Search anime articles...">
-    </div>
-
-    <!-- Articles -->
-    <section class="articles" id="articleContainer">
-
-        <div class="card" data-title="Attack on Titan">
-            <img src="https://via.placeholder.com/300x200">
-            <h3>Attack on Titan: The Psychology of Fear</h3>
-            <p>Explore how fear drives characters in AoT.</p>
-        </div>
-
-        <div class="card" data-title="Naruto">
-            <img src="https://via.placeholder.com/300x200">
-            <h3>Naruto: Journey of a Ninja</h3>
-            <p>The story of perseverance and friendship.</p>
-        </div>
-
-        <div class="card" data-title="One Piece">
-            <img src="https://via.placeholder.com/300x200">
-            <h3>One Piece: World Building Masterclass</h3>
-            <p>How Oda created the greatest anime world.</p>
-        </div>
-
-        <div class="card" data-title="Death Note">
-            <img src="https://via.placeholder.com/300x200">
-            <h3>Death Note: Justice vs Morality</h3>
-            <p>A deep dive into Light vs L debate.</p>
-        </div>
-
+    <!-- Gallery Section -->
+    <section class="gallery" id="gallery">
+        <h2>Public Gallery</h2>
+        <div class="image-grid" id="imageGrid"></div>
     </section>
 
     <script src="script.js"></script>
