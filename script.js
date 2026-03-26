@@ -1,302 +1,327 @@
-// Sample gallery stickers
-const galleryStickers = [
-    { id: 1, prompt: "cute neko girl with pink hair", emoji: "🐱👧💕" },
-    { id: 2, prompt: "samurai warrior", emoji: "⚔️🌸" },
-    { id: 3, prompt: "magical girl", emoji: "✨👧⭐" },
-    { id: 4, prompt: "cyberpunk hacker", emoji: "🤖💻🔥" },
-    { id: 5, prompt: "gothic lolita", emoji: "🧛‍♀️🖤🎀" },
-    { id: 6, prompt: "mecha pilot", emoji: "🤖⚡🗡️" },
-    { id: 7, prompt: "schoolgirl fox", emoji: "🦊👧📚" },
-    { id: 8, prompt: "space princess", emoji: "👸🌌✨" },
-    { id: 9, prompt: "ninja girl", emoji: "🥷⭐" },
-    { id: 10, prompt: "idol singer", emoji: "🎤💖" }
-];
-
-let displayedStickers = 6;
-let currentGeneratedSticker = null;
-let currentStickerDataURL = null;
-
-// 🔥 FIXED: Initialize page when DOM loads
+// AnimeFandomHub - Complete JavaScript
 document.addEventListener('DOMContentLoaded', function() {
-    console.log('🎉 AnimeStickerAI Loaded!');
-    loadGallery();
-    setupEventListeners(); // NEW: All event listeners here
-    animateGalleryCards();
-});
-
-// 🔥 NEW: Centralized event setup
-function setupEventListeners() {
-    // Top CTA button
-    const ctaButton = document.querySelector('.cta-button');
-    ctaButton.addEventListener('click', function() {
-        scrollToGenerate();
-        setTimeout(() => {
-            document.getElementById('stickerPrompt').focus();
-        }, 500);
-    });
-
-    // Generate button
-    document.querySelector('.generate-btn').addEventListener('click', generateSticker);
     
-    // Enter key
-    document.getElementById('stickerPrompt').addEventListener('keypress', function(e) {
-        if (e.key === 'Enter') generateSticker();
+    // Sample Data
+    const articles = [
+        {
+            id: 1,
+            title: "The Philosophy Behind Neon Genesis Evangelion",
+            excerpt: "Exploring the existential themes and psychological depth of one of anime's most complex series.",
+            rating: 4.8,
+            emoji: "🤖",
+            category: "Analysis",
+            date: "Dec 15, 2024",
+            comments: 245
+        },
+        {
+            id: 2,
+            title: "Jujutsu Kaisen: Sukuna's True Power Revealed?",
+            excerpt: "Breaking down the latest manga chapters and fan theories about the King of Curses.",
+            rating: 4.9,
+            emoji: "👹",
+            category: "Theory",
+            date: "Dec 14, 2024",
+            comments: 389
+        },
+        {
+            id: 3,
+            title: "Top 10 Isekai Worlds Ranked",
+            excerpt: "From Re:Zero to Overlord, which fantasy world would you want to get transported to?",
+            rating: 4.7,
+            emoji: "⚔️",
+            category: "Ranking",
+            date: "Dec 13, 2024",
+            comments: 156
+        },
+        {
+            id: 4,
+            title: "One Piece: The Final Saga Predictions",
+            excerpt: "What lies ahead for Luffy and the Straw Hats as they approach the series finale?",
+            rating: 4.9,
+            emoji: "🏴‍☠️",
+            category: "Prediction",
+            date: "Dec 12, 2024",
+            comments: 512
+        },
+        {
+            id: 5,
+            title: "Studio Ghibli's Hidden Environmental Messages",
+            excerpt: "How Miyazaki's masterpieces teach us about nature and humanity.",
+            rating: 4.6,
+            emoji: "🌿",
+            category: "Culture",
+            date: "Dec 11, 2024",
+            comments: 98
+        }
+    ];
+
+    const comments = [
+        { author: "OtakuKing", text: "This analysis blew my mind! 🔥", time: "2h ago" },
+        { author: "AnimeFanatic", text: "Great points about the symbolism!", time: "4h ago" },
+        { author: "WeebMaster", text: "Finally someone gets it! 🙌", time: "6h ago" }
+    ];
+
+    // DOM Elements
+    const featuredContainer = document.getElementById('featuredArticles');
+    const latestContainer = document.getElementById('latestArticles');
+    const recentCommentsContainer = document.getElementById('recentComments');
+    const articleModal = document.getElementById('articleModal');
+    const modalContent = document.getElementById('modalArticleContent');
+    const themeToggle = document.getElementById('themeToggle');
+    const searchInput = document.getElementById('searchInput');
+    const newsletterForm = document.getElementById('newsletterForm');
+    const mobileMenuToggle = document.querySelector('.mobile-menu-toggle');
+    const navLinks = document.querySelectorAll('.nav-link');
+    const closeModal = document.querySelector('.close');
+
+    // Initialize
+    renderFeaturedArticles();
+    renderLatestArticles();
+    renderRecentComments();
+    animateStats();
+    initSmoothScroll();
+
+    // Theme Toggle
+    const currentTheme = localStorage.getItem('theme') || 'light';
+    document.documentElement.setAttribute('data-theme', currentTheme);
+    themeToggle.textContent = currentTheme === 'dark' ? '☀️' : '🌙';
+
+    themeToggle.addEventListener('click', function() {
+        const newTheme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+        document.documentElement.setAttribute('data-theme', newTheme);
+        localStorage.setItem('theme', newTheme);
+        themeToggle.textContent = newTheme === 'dark' ? '☀️' : '🌙';
     });
 
-    // Example buttons
-    document.querySelectorAll('.example-btn').forEach(btn => {
-        btn.addEventListener('click', function() {
-            const prompt = this.textContent;
-            setPrompt(prompt);
+    // Render Featured Articles
+    function renderFeaturedArticles() {
+        featuredContainer.innerHTML = articles.slice(0, 3).map(article => createArticleCard(article, 'large')).join('');
+    }
+
+    // Render Latest Articles (Carousel)
+    function renderLatestArticles() {
+        latestContainer.innerHTML = articles.map(article => createArticleCard(article, 'small')).join('');
+    }
+
+    // Create Article Card
+    function createArticleCard(article, size = 'large') {
+        const stars = '⭐'.repeat(Math.floor(article.rating));
+        return `
+            <div class="article-card ${size === 'small' ? 'article-card-small' : ''}" data-article-id="${article.id}">
+                <div class="article-image">${article.emoji}</div>
+                <div class="article-content">
+                    <h3 class="article-title">${article.title}</h3>
+                    <div class="article-meta">
+                        <span class="rating">
+                            <span class="stars">${stars}</span>
+                            <span>(${article.rating})</span>
+                        </span>
+                        <span>${article.comments} comments</span>
+                    </div>
+                    ${size === 'large' ? `<p class="article-excerpt">${article.excerpt}</p>` : ''}
+                    ${size === 'large' ? '<div class="read-more">Read Full Article →</div>' : ''}
+                </div>
+            </div>
+        `;
+    }
+
+    // Render Recent Comments
+    function renderRecentComments() {
+        recentCommentsContainer.innerHTML = comments.map(comment => `
+            <div class="recent-comment">
+                <div class="comment-author">${comment.author}</div>
+                <p>${comment.text}</p>
+                <small>${comment.time}</small>
+            </div>
+        `).join('');
+    }
+
+    // Article Modal
+    featuredContainer.addEventListener('click', function(e) {
+        const card = e.target.closest('.article-card');
+        if (card) {
+            const articleId = parseInt(card.dataset.articleId);
+            const article = articles.find(a => a.id === articleId);
+            showArticleModal(article);
+        }
+    });
+
+    latestContainer.addEventListener('click', function(e) {
+        const card = e.target.closest('.article-card');
+        if (card) {
+            const articleId = parseInt(card.dataset.articleId);
+            const article = articles.find(a => a.id === articleId);
+            showArticleModal(article);
+        }
+    });
+
+    function showArticleModal(article) {
+        modalContent.innerHTML = `
+            <div class="modal-header">
+                <h2>${article.emoji} ${article.title}</h2>
+                <div class="article-meta">
+                    <span>⭐ ${article.rating} (${article.comments} comments)</span>
+                    <span>${article.category} • ${article.date}</span>
+                </div>
+            </div>
+            <div class="modal-body">
+                <p>${article.excerpt}</p>
+                <p><strong>Full analysis coming soon...</strong></p>
+                <div class="modal-actions">
+                    <button class="btn-primary">👍 Like (124)</button>
+                    <button class="btn-secondary">💬 Comment</button>
+                    <button class="btn-login">⭐ Rate Article</button>
+                </div>
+            </div>
+        `;
+        articleModal.style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+    }
+
+    // Close Modal
+    closeModal.addEventListener('click', closeModalHandler);
+    articleModal.addEventListener('click', function(e) {
+        if (e.target === articleModal) closeModalHandler();
+    });
+
+    function closeModalHandler() {
+        articleModal.style.display = 'none';
+        document.body.style.overflow = 'auto';
+    }
+
+    // Search Functionality
+    let searchTimeout;
+    searchInput.addEventListener('input', function() {
+        clearTimeout(searchTimeout);
+        searchTimeout = setTimeout(() => {
+            const query = this.value.toLowerCase();
+            filterArticles(query);
+        }, 300);
+    });
+
+    function filterArticles(query) {
+        const cards = document.querySelectorAll('.article-card');
+        cards.forEach(card => {
+            const title = card.querySelector('.article-title').textContent.toLowerCase();
+            card.style.display = title.includes(query) ? 'block' : 'none';
         });
+    }
+
+    // Newsletter Form
+    newsletterForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        const email = this.querySelector('input[type="email"]').value;
+        alert(`Thank you for subscribing with ${email}! 🎉\n(Newsletter feature coming soon)`);
+        this.reset();
     });
 
-    // Smooth scrolling
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function (e) {
-            e.preventDefault();
-            const target = document.querySelector(this.getAttribute('href'));
-            if (target) {
-                target.scrollIntoView({ behavior: 'smooth' });
+    // Animate Stats
+    function animateStats() {
+        const stats = document.querySelectorAll('.stat-number');
+        stats.forEach(stat => {
+            const target = parseInt(stat.dataset.target);
+            const increment = target / 100;
+            let current = 0;
+            
+            const timer = setInterval(() => {
+                current += increment;
+                if (current >= target) {
+                    stat.textContent = target.toLocaleString();
+                    clearInterval(timer);
+                } else {
+                    stat.textContent = Math.floor(current).toLocaleString();
+                }
+            }, 20);
+        });
+    }
+
+    // Smooth Scroll Navigation
+    function initSmoothScroll() {
+        navLinks.forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href').substring(1);
+                const targetSection = document.getElementById(targetId);
+                targetSection.scrollIntoView({ behavior: 'smooth' });
+                
+                // Update active nav
+                navLinks.forEach(l => l.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+    }
+
+    // Mobile Menu Toggle
+    mobileMenuToggle.addEventListener('click', function() {
+        const nav = document.querySelector('.nav');
+        nav.classList.toggle('mobile-open');
+    });
+
+    // Poll Animation
+    function animatePoll() {
+        const pollBars = document.querySelectorAll('.poll-bar');
+        pollBars.forEach(bar => {
+            const percent = bar.dataset.percent;
+            setTimeout(() => {
+                bar.style.width = percent + '%';
+            }, 500);
+        });
+    }
+
+    // Intersection Observer for Animations
+    const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+    };
+
+    const observer = new IntersectionObserver(function(entries) {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.style.opacity = '1';
+                entry.target.style.transform = 'translateY(0)';
             }
         });
+    }, observerOptions);
+
+    // Observe sections for animation
+    document.querySelectorAll('.featured, .latest, .community').forEach(section => {
+        section.style.opacity = '0';
+        section.style.transform = 'translateY(30px)';
+        section.style.transition = 'all 0.6s ease';
+        observer.observe(section);
     });
 
-    // Mobile menu
-    const toggle = document.querySelector('.mobile-menu-toggle');
-    if (toggle) {
-        toggle.addEventListener('click', function() {
-            const navUl = document.querySelector('nav ul');
-            navUl.style.display = navUl.style.display === 'flex' ? 'none' : 'flex';
-        });
-    }
-}
+    // Auto-animate poll on load
+    setTimeout(animatePoll, 1000);
 
-// Load gallery
-function loadGallery() {
-    const grid = document.getElementById('galleryGrid');
-    if (!grid) return;
-    
-    grid.innerHTML = '';
-    galleryStickers.slice(0, displayedStickers).forEach(sticker => {
-        const card = createStickerCard(sticker);
-        grid.appendChild(card);
+    // Window scroll effects
+    let lastScroll = 0;
+    window.addEventListener('scroll', function() {
+        const header = document.querySelector('.header');
+        const scrollTop = window.scrollY;
+
+        // Header shrink on scroll
+        if (scrollTop > 100) {
+            header.style.background = 'rgba(255, 255, 255, 0.98)';
+            header.style.backdropFilter = 'blur(20px)';
+        } else {
+            header.style.background = 'rgba(255, 255, 255, 0.95)';
+            header.style.backdropFilter = 'blur(10px)';
+        }
+
+        // Parallax effect for hero
+        const hero = document.querySelector('.hero');
+        const scrolled = scrollTop * 0.5;
+        hero.style.transform = `translateY(${scrolled}px)`;
+
+        lastScroll = scrollTop;
     });
-}
 
-// Create sticker card
-function createStickerCard(sticker) {
-    const card = document.createElement('div');
-    card.className = 'sticker-card';
-    card.innerHTML = `
-        <div class="sticker-image">
-            <span style="font-size: 4rem;">${sticker.emoji}</span>
-        </div>
-        <div class="sticker-info">
-            <h3>${sticker.prompt}</h3>
-            <p class="sticker-prompt">AI Generated</p>
-        </div>
-    `;
-    card.addEventListener('click', () => setPrompt(sticker.prompt));
-    return card;
-}
-
-// Load more
-function loadMoreStickers() {
-    const newCount = Math.min(displayedStickers + 4, galleryStickers.length);
-    const grid = document.getElementById('galleryGrid');
-    
-    for (let i = displayedStickers; i < newCount; i++) {
-        grid.appendChild(createStickerCard(galleryStickers[i]));
-    }
-    
-    displayedStickers = newCount;
-    if (displayedStickers >= galleryStickers.length) {
-        document.querySelector('.load-more-btn').style.display = 'none';
-    }
-}
-
-// Scroll functions
-function scrollToGenerate() {
-    document.getElementById('generate').scrollIntoView({ behavior: 'smooth' });
-}
-
-function setPrompt(prompt) {
-    document.getElementById('stickerPrompt').value = prompt;
-}
-
-// 🔥 FIXED: WORKING GENERATION (OFFLINE + Real Anime Style)
-async function generateSticker() {
-    const promptInput = document.getElementById('stickerPrompt');
-    const prompt = promptInput.value.trim();
-    
-    if (!prompt) {
-        alert('👋 Please describe your anime sticker!');
-        promptInput.focus();
-        return;
-    }
-
-    console.log('🎨 Generating:', prompt);
-
-    // Show loading
-    const loading = document.getElementById('loadingSpinner');
-    const result = document.getElementById('stickerResult');
-    const img = document.getElementById('generatedSticker');
-    
-    loading.style.display = 'block';
-    result.style.display = 'none';
-
-    // 🔥 REAL ANIME STICKER GENERATION (Works offline)
-    try {
-        const canvas = document.createElement('canvas');
-        canvas.width = 400;
-        canvas.height = 400;
-        const ctx = canvas.getContext('2d');
-
-        // Beautiful anime sticker background
-        const bgGradient = ctx.createRadialGradient(200, 200, 0, 200, 200, 200);
-        bgGradient.addColorStop(0, '#ff9a9e');
-        bgGradient.addColorStop(0.5, '#fecfef');
-        bgGradient.addColorStop(1, '#fecfef');
-        ctx.fillStyle = bgGradient;
-        ctx.fillRect(0, 0, 400, 400);
-
-        // White sticker border with glow
-        ctx.shadowColor = 'rgba(255,255,255,0.8)';
-        ctx.shadowBlur = 25;
-        ctx.strokeStyle = '#ffffff';
-        ctx.lineWidth = 15;
-        ctx.lineJoin = 'round';
-        ctx.strokeRect(25, 25, 350, 350);
-        ctx.shadowBlur = 0;
-
-        // Anime sparkle effects
-        const sparkles = [
-            {x: 80, y: 80, size: 25, emoji: '✨'},
-            {x: 320, y: 70, size: 20, emoji: '⭐'},
-            {x: 60, y: 320, size: 22, emoji: '🌟'},
-            {x: 340, y: 340, size: 18, emoji: '💫'}
-        ];
-
-        ctx.font = 'bold 40px Arial';
-        ctx.fillStyle = '#ff6b9d';
-        ctx.textAlign = 'center';
-        sparkles.forEach(s => {
-            ctx.shadowColor = '#ff6b9d';
-            ctx.shadowBlur = 15;
-            ctx.fillText(s.emoji, s.x, s.y + 35);
-            ctx.shadowBlur = 0;
-        });
-
-        // Main anime character area
-        ctx.fillStyle = '#fff';
-        ctx.fillRect(80, 100, 240, 200);
-
-        // Kawaii face elements
-        ctx.fillStyle = '#ff6b9d';
-        ctx.beginPath();
-        ctx.arc(150, 160, 25, 0, Math.PI * 2); // Left eye
-        ctx.arc(250, 160, 25, 0, Math.PI * 2); // Right eye
-        ctx.fill();
-
-        // Cute blush
-        ctx.fillStyle = '#ffb3ba';
-        ctx.beginPath();
-        ctx.arc(130, 190, 15, 0, Math.PI);
-        ctx.arc(270, 190, 15, 0, Math.PI);
-        ctx.fill();
-
-        // Happy mouth
-        ctx.strokeStyle = '#ff6b9d';
-        ctx.lineWidth = 8;
-        ctx.lineCap = 'round';
-        ctx.beginPath();
-        ctx.arc(200, 230, 25, 0, Math.PI);
-        ctx.stroke();
-
-        // Prompt text at bottom
-        ctx.fillStyle = '#333';
-        ctx.font = 'bold 20px Poppins, Arial';
-        ctx.textAlign = 'center';
-        ctx.fillText(prompt.substring(0, 25) + '...', 200, 360);
-
-        // Convert to image
-        const dataURL = canvas.toDataURL('image/png');
-        currentStickerDataURL = dataURL;
-        
-        // Display image
-        img.src = dataURL;
-        img.style.display = 'block';
-        img.onload = () => {
-            loading.style.display = 'none';
-            result.style.display = 'block';
-            result.scrollIntoView({ behavior: 'smooth' });
-            
-            // Success message
-            console.log('✅ Sticker generated successfully!');
-        };
-
-    } catch (error) {
-        console.error('❌ Error:', error);
-        loading.style.display = 'none';
-        alert('✨ Sticker preview ready! Use download button to save.');
-    }
-}
-
-// 🔥 FIXED: WORKING DOWNLOAD
-function downloadSticker() {
-    if (!currentStickerDataURL) {
-        alert('👆 Generate a sticker first!');
-        return;
-    }
-
-    // Create download link
-    const link = document.createElement('a');
-    link.download = `anime-sticker-${Date.now()}.png`;
-    link.href = currentStickerDataURL;
-    link.click();
-    
-    // Show success
-    console.log('💾 Downloaded!');
-}
-
-// 🔥 FIXED: WORKING SHARE
-function shareSticker() {
-    if (!currentStickerDataURL) {
-        alert('👆 Generate a sticker first!');
-        return;
-    }
-
-    if (navigator.share) {
-        navigator.share({
-            title: 'My Anime Sticker! 🎨',
-            text: 'Check out my custom anime sticker from AnimeStickerAI!',
-            files: [
-                new File([currentStickerDataURL], 'sticker.png', { type: 'image/png' })
-            ]
-        }).catch(console.error);
-    } else {
-        // Copy to clipboard fallback
-        navigator.clipboard.writeText(currentStickerDataURL).then(() => {
-            alert('📱 Image copied to clipboard! Paste anywhere! ✨');
-        }).catch(() => {
-            // Direct download as fallback
-            downloadSticker();
-        });
-    }
-}
-
-// Animate gallery cards
-function animateGalleryCards() {
-    const cards = document.querySelectorAll('.sticker-card');
-    cards.forEach((card, index) => {
-        card.style.opacity = '0';
-        card.style.transform = 'translateY(50px)';
-        card.style.transition = `all 0.6s ${index * 0.1}s`;
-        
-        setTimeout(() => {
-            card.style.opacity = '1';
-            card.style.transform = 'translateY(0)';
-        }, 100);
+    // Keyboard shortcuts
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') closeModalHandler();
+        if (e.key === '/') searchInput.focus();
     });
-}
+
+    console.log('🎌 AnimeFandomHub loaded successfully! 🚀');
+});
