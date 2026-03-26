@@ -3,502 +3,62 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AnimeSkeptic - Debunking Anime Myths & Urban Legends</title>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Roboto', sans-serif;
-            background: linear-gradient(135deg, #0f0f23 0%, #1a1a3e 50%, #2d1b69 100%);
-            color: #ffffff;
-            overflow-x: hidden;
-            line-height: 1.6;
-        }
-
-        /* Header */
-        header {
-            background: rgba(0, 0, 0, 0.9);
-            backdrop-filter: blur(10px);
-            position: fixed;
-            width: 100%;
-            top: 0;
-            z-index: 1000;
-            padding: 1rem 0;
-            box-shadow: 0 4px 20px rgba(138, 43, 226, 0.3);
-        }
-
-        nav {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0 2rem;
-        }
-
-        .logo {
-            font-family: 'Orbitron', monospace;
-            font-size: 2rem;
-            font-weight: 900;
-            background: linear-gradient(45deg, #ff6b6b, #4ecdc4, #45b7d1, #96ceb4);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            text-shadow: 0 0 30px rgba(255, 107, 107, 0.5);
-        }
-
-        .nav-links {
-            display: flex;
-            list-style: none;
-            gap: 2rem;
-        }
-
-        .nav-links a {
-            color: #ffffff;
-            text-decoration: none;
-            font-weight: 500;
-            transition: all 0.3s ease;
-            position: relative;
-        }
-
-        .nav-links a:hover {
-            color: #4ecdc4;
-            text-shadow: 0 0 10px #4ecdc4;
-        }
-
-        .nav-links a::after {
-            content: '';
-            position: absolute;
-            width: 0;
-            height: 2px;
-            bottom: -5px;
-            left: 0;
-            background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
-            transition: width 0.3s ease;
-        }
-
-        .nav-links a:hover::after {
-            width: 100%;
-        }
-
-        /* Hero Section */
-        .hero {
-            height: 100vh;
-            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000"><defs><radialGradient id="a" cx="50%" cy="50%"><stop offset="0%" stop-color="%23ff6b6b"/><stop offset="50%" stop-color="%234ecdc4"/><stop offset="100%" stop-color="%230f0f23"/></radialGradient></defs><rect width="100%" height="100%" fill="url(%23a)"/><circle cx="200" cy="300" r="50" fill="%23ffffff" opacity="0.1"><animate attributeName="cy" values="300;200;300" dur="3s" repeatCount="indefinite"/></circle><circle cx="800" cy="700" r="70" fill="%234ecdc4" opacity="0.2"><animate attributeName="cy" values="700;600;700" dur="4s" repeatCount="indefinite"/></circle></svg>') center/cover;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            position: relative;
-        }
-
-        .hero-content h1 {
-            font-family: 'Orbitron', monospace;
-            font-size: 4rem;
-            margin-bottom: 1rem;
-            background: linear-gradient(45deg, #ff6b6b, #4ecdc4, #45b7d1);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            animation: glow 2s ease-in-out infinite alternate;
-        }
-
-        @keyframes glow {
-            from { filter: drop-shadow(0 0 20px #ff6b6b); }
-            to { filter: drop-shadow(0 0 30px #4ecdc4); }
-        }
-
-        .hero-content p {
-            font-size: 1.5rem;
-            margin-bottom: 2rem;
-            opacity: 0.9;
-        }
-
-        .cta-button {
-            display: inline-block;
-            padding: 1rem 2rem;
-            background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
-            color: white;
-            text-decoration: none;
-            border-radius: 50px;
-            font-weight: 500;
-            transition: all 0.3s ease;
-            box-shadow: 0 10px 30px rgba(255, 107, 107, 0.4);
-        }
-
-        .cta-button:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 40px rgba(78, 205, 196, 0.6);
-        }
-
-        /* Articles Section */
-        .articles {
-            max-width: 1200px;
-            margin: 5rem auto;
-            padding: 0 2rem;
-        }
-
-        .section-title {
-            font-family: 'Orbitron', monospace;
-            font-size: 3rem;
-            text-align: center;
-            margin-bottom: 4rem;
-            background: linear-gradient(45deg, #4ecdc4, #45b7d1);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .articles-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 2rem;
-            margin-bottom: 4rem;
-        }
-
-        .article-card {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            overflow: hidden;
-            transition: all 0.4s ease;
-            border: 1px solid rgba(78, 205, 196, 0.2);
-            position: relative;
-        }
-
-        .article-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 4px;
-            background: linear-gradient(90deg, #ff6b6b, #4ecdc4, #45b7d1);
-        }
-
-        .article-card:hover {
-            transform: translateY(-10px) scale(1.02);
-            box-shadow: 0 20px 40px rgba(78, 205, 196, 0.3);
-            border-color: #4ecdc4;
-        }
-
-        .article-image {
-            height: 200px;
-            background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .article-image::after {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 80px;
-            height: 80px;
-            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23ffffff"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>') center/contain no-repeat;
-            transform: translate(-50%, -50%);
-            opacity: 0.3;
-        }
-
-        .article-content {
-            padding: 1.5rem;
-        }
-
-        .article-title {
-            font-family: 'Orbitron', monospace;
-            font-size: 1.5rem;
-            margin-bottom: 0.5rem;
-            color: #4ecdc4;
-        }
-
-        .article-meta {
-            display: flex;
-            gap: 1rem;
-            margin-bottom: 1rem;
-            font-size: 0.9rem;
-            opacity: 0.7;
-        }
-
-        .article-excerpt {
-            margin-bottom: 1.5rem;
-            opacity: 0.9;
-        }
-
-        .read-more {
-            color: #4ecdc4;
-            text-decoration: none;
-            font-weight: 500;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            transition: color 0.3s ease;
-        }
-
-        .read-more:hover {
-            color: #ff6b6b;
-        }
-
-        /* Load More Button */
-        .load-more {
-            display: block;
-            margin: 4rem auto 2rem;
-            padding: 1rem 3rem;
-            background: rgba(78, 205, 196, 0.2);
-            border: 2px solid #4ecdc4;
-            color: #4ecdc4;
-            border-radius: 50px;
-            font-size: 1.1rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .load-more:hover {
-            background: #4ecdc4;
-            color: #0f0f23;
-            transform: translateY(-2px);
-        }
-
-        /* Footer */
-        footer {
-            background: rgba(0, 0, 0, 0.8);
-            text-align: center;
-            padding: 3rem 2rem;
-            margin-top: 5rem;
-        }
-
-        .social-links {
-            display: flex;
-            justify-content: center;
-            gap: 2rem;
-            margin-bottom: 2rem;
-        }
-
-        .social-links a {
-            width: 50px;
-            height: 50px;
-            background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            text-decoration: none;
-            transition: transform 0.3s ease;
-        }
-
-        .social-links a:hover {
-            transform: translateY(-5px) scale(1.1);
-        }
-
-        /* Responsive */
-        @media (max-width: 768px) {
-            .nav-links {
-                display: none;
-            }
-
-            .hero-content h1 {
-                font-size: 2.5rem;
-            }
-
-            .section-title {
-                font-size: 2rem;
-            }
-        }
-
-        /* Animations */
-        .fade-in {
-            opacity: 0;
-            transform: translateY(30px);
-            transition: all 0.6s ease;
-        }
-
-        .fade-in.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-    </style>
+    <title>AnimeSphere</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
+
+    <!-- Navbar -->
     <header>
+        <h1>AnimeSphere</h1>
         <nav>
-            <div class="logo">AnimeSkeptic</div>
-            <ul class="nav-links">
-                <li><a href="#home">Home</a></li>
-                <li><a href="#articles">Articles</a></li>
-                <li><a href="#myths">Myths</a></li>
-                <li><a href="#about">About</a></li>
-            </ul>
+            <a href="#">Home</a>
+            <a href="#">Genres</a>
+            <a href="#">Top Anime</a>
+            <a href="#">Community</a>
         </nav>
     </header>
 
-    <section id="home" class="hero">
-        <div class="hero-content">
-            <h1>AnimeSkeptic</h1>
-            <p>Debunking anime myths, urban legends, and fan theories with cold, hard facts</p>
-            <a href="#articles" class="cta-button">Explore Articles</a>
-        </div>
+    <!-- Hero Section -->
+    <section class="hero">
+        <h2>Explore Anime Worlds</h2>
+        <p>Dive into articles about anime, fandoms, theories & more.</p>
     </section>
 
-    <section id="articles" class="articles">
-        <h2 class="section-title fade-in">Latest Investigations</h2>
-        <div class="articles-grid" id="articlesGrid">
-            <!-- Articles will be loaded here by JavaScript -->
+    <!-- Search -->
+    <div class="search-box">
+        <input type="text" id="search" placeholder="Search anime articles...">
+    </div>
+
+    <!-- Articles -->
+    <section class="articles" id="articleContainer">
+
+        <div class="card" data-title="Attack on Titan">
+            <img src="https://via.placeholder.com/300x200">
+            <h3>Attack on Titan: The Psychology of Fear</h3>
+            <p>Explore how fear drives characters in AoT.</p>
         </div>
-        <button class="load-more fade-in" onclick="loadMoreArticles()">Load More Investigations</button>
+
+        <div class="card" data-title="Naruto">
+            <img src="https://via.placeholder.com/300x200">
+            <h3>Naruto: Journey of a Ninja</h3>
+            <p>The story of perseverance and friendship.</p>
+        </div>
+
+        <div class="card" data-title="One Piece">
+            <img src="https://via.placeholder.com/300x200">
+            <h3>One Piece: World Building Masterclass</h3>
+            <p>How Oda created the greatest anime world.</p>
+        </div>
+
+        <div class="card" data-title="Death Note">
+            <img src="https://via.placeholder.com/300x200">
+            <h3>Death Note: Justice vs Morality</h3>
+            <p>A deep dive into Light vs L debate.</p>
+        </div>
+
     </section>
 
-    <footer>
-        <div class="social-links">
-            <a href="#"><i class="fab fa-twitter"></i></a>
-            <a href="#"><i class="fab fa-discord"></i></a>
-            <a href="#"><i class="fab fa-reddit"></i></a>
-            <a href="#"><i class="fab fa-youtube"></i></a>
-        </div>
-        <p>&copy; 2024 AnimeSkeptic. Separating anime fact from fiction. All rights reserved.</p>
-    </footer>
-
-    <script>
-        // Sample anime skeptic articles
-        const articles = [
-            {
-                title: "Is Sailor Moon Actually Stronger Than Goku?",
-                date: "Dec 15, 2024",
-                author: "Otaku Detective",
-                excerpt: "The age-old debate finally settled with power scaling analysis and canonical feats comparison.",
-                category: "Power Scaling"
-            },
-            {
-                title: "Did Studio Ghibli Hide Secret Messages in Spirited Away?",
-                date: "Dec 12, 2024",
-                author: "Frame-by-Frame Analyst",
-                excerpt: "Conspiracy theorists claim hidden satanic symbols. We examine every frame.",
-                category: "Conspiracy"
-            },
-            {
-                title: "Attack on Titan Ending: Genius or Cop-Out?",
-                date: "Dec 10, 2024",
-                author: "Plot Inspector",
-                excerpt: "Breaking down the controversial finale with timeline analysis and creator interviews.",
-                category: "Plot Analysis"
-            },
-            {
-                title: "Is L from Death Note Based on a Real Detective?",
-                date: "Dec 8, 2024",
-                author: "Real vs Fiction",
-                excerpt: "Investigating claims that Death Note's genius detective was inspired by true events.",
-                category: "Real Inspirations"
-            },
-            {
-                title: "One Piece: Will Luffy Become Pirate King by 2025?",
-                date: "Dec 5, 2024",
-                author: "Timeline Tracker",
-                excerpt: "Mathematical analysis of Oda's release schedule vs in-story timeline.",
-                category: "Predictions"
-            },
-            {
-                title: "Neon Genesis Evangelion: Religious Symbolism or Marketing?",
-                date: "Dec 2, 2024",
-                author: "Symbolism Scholar",
-                excerpt: "Deep dive into whether Eva's religious imagery has actual meaning or is just aesthetic.",
-                category: "Symbolism"
-            }
-        ];
-
-        let currentIndex = 0;
-        const articlesPerLoad = 3;
-
-        function createArticleCard(article) {
-            return `
-                <article class="article-card fade-in">
-                    <div class="article-image"></div>
-                    <div class="article-content">
-                        <h3 class="article-title">${article.title}</h3>
-                        <div class="article-meta">
-                            <span><i class="fas fa-calendar"></i> ${article.date}</span>
-                            <span><i class="fas fa-user"></i> ${article.author}</span>
-                            <span class="category" style="color: #ff6b6b;">${article.category}</span>
-                        </div>
-                        <p class="article-excerpt">${article.excerpt}</p>
-                        <a href="#" class="read-more">
-                            Read Investigation <i class="fas fa-arrow-right"></i>
-                        </a>
-                    </div>
-                </article>
-            `;
-        }
-
-        function loadArticles() {
-            const grid = document.getElementById('articlesGrid');
-            const endIndex = Math.min(currentIndex + articlesPerLoad, articles.length);
-            
-            for (let i = currentIndex; i < endIndex; i++) {
-                grid.innerHTML += createArticleCard(articles[i]);
-            }
-            
-            currentIndex = endIndex;
-            
-            // Hide load more button if all articles loaded
-            if (currentIndex >= articles.length) {
-                document.querySelector('.load-more').style.display = 'none';
-            }
-        }
-
-        function loadMoreArticles() {
-            loadArticles();
-        }
-
-        // Intersection Observer for fade-in animations
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -50px 0px'
-        };
-
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                }
-            });
-        }, observerOptions);
-
-        // Smooth scrolling for nav links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
-                }
-            });
-        });
-
-        // Initialize
-        document.addEventListener('DOMContentLoaded', function() {
-            loadArticles();
-            
-            // Observe all fade-in elements
-            document.querySelectorAll('.fade-in').forEach(el => {
-                observer.observe(el);
-            });
-        });
-
-        // Navbar scroll effect
-        window.addEventListener('scroll', () => {
-            const header = document.querySelector('header');
-            if (window.scrollY > 100) {
-                header.style.background = 'rgba(0, 0, 0, 0.95)';
-            } else {
-                header.style.background = 'rgba(0, 0, 0, 0.9)';
-            }
-        });
-    </script>
+    <script src="script.js"></script>
+</body>
+</html>
