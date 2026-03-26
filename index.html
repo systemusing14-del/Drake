@@ -3,36 +3,62 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Anime Gallery</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>AnimeShare - Share Anime Images</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 </head>
 <body>
-
     <header>
-        <h1>🎌 Anime Image Gallery</h1>
+        <div class="container">
+            <h1><i class="fas fa-images"></i> AnimeShare</h1>
+            <p>Share your favorite anime images with the community!</p>
+        </div>
     </header>
 
-    <!-- Upload Section -->
-    <section class="upload-section">
-        <h2>Upload Anime Image</h2>
-        
-        <form id="uploadForm">
-            <input type="file" id="imageInput" accept="image/*" required>
-            
-            <!-- Tag input to help validate anime -->
-            <input type="text" id="tagInput" placeholder="Enter tag (e.g. anime, naruto)" required>
-            
-            <button type="submit">Upload</button>
-        </form>
+    <main class="container">
+        <!-- Upload Section -->
+        <section class="upload-section">
+            <h2><i class="fas fa-cloud-upload-alt"></i> Upload Anime Image</h2>
+            <div class="upload-area" id="uploadArea">
+                <i class="fas fa-image upload-icon"></i>
+                <p>Drag & drop your anime image here or click to browse</p>
+                <input type="file" id="imageInput" accept="image/*" hidden>
+                <button id="uploadBtn" class="upload-btn" disabled>Upload Image</button>
+            </div>
+            <div class="upload-preview" id="previewContainer" style="display: none;">
+                <img id="previewImg" src="" alt="Preview">
+                <div class="preview-actions">
+                    <button id="confirmUpload" class="confirm-btn">Confirm & Upload</button>
+                    <button id="cancelUpload" class="cancel-btn">Cancel</button>
+                </div>
+            </div>
+            <div id="uploadProgress" class="progress-bar" style="display: none;">
+                <div class="progress-fill"></div>
+            </div>
+            <p class="upload-info">
+                <strong>Only anime-style images allowed!</strong> Max size: 10MB
+            </p>
+        </section>
 
-        <p class="note">Only anime-related images allowed. Max size: 2MB</p>
-    </section>
-
-    <!-- Gallery Section -->
-    <section class="gallery" id="gallery">
-        <h2>Public Gallery</h2>
-        <div class="image-grid" id="imageGrid"></div>
-    </section>
+        <!-- Gallery Section -->
+        <section class="gallery-section">
+            <h2><i class="fas fa-th-large"></i> Anime Gallery (<span id="imageCount">0</span>)</h2>
+            <div class="gallery-filters">
+                <input type="text" id="searchInput" placeholder="Search images...">
+                <button id="sortBtn" class="sort-btn">
+                    <i class="fas fa-sort"></i> Sort by Newest
+                </button>
+            </div>
+            <div class="gallery-grid" id="galleryGrid">
+                <!-- Images will be loaded here -->
+            </div>
+            <div id="noImages" class="no-images" style="display: none;">
+                <i class="fas fa-images"></i>
+                <h3>No anime images yet!</h3>
+                <p>Be the first to upload an awesome anime image!</p>
+            </div>
+        </section>
+    </main>
 
     <script src="script.js"></script>
 </body>
